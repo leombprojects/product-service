@@ -1,0 +1,40 @@
+logging.level:
+  org.leombprojects: DEBUG
+  org:
+    springframework:
+      security: TRACE
+
+server:
+  port: 8092
+  servlet.context-path: /product-service
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:keystore/empcalories.p12
+    key-store-password: password
+    key-alias: empcalories
+    enabled: false
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://login.microsoftonline.com/a91a2f57-6dc8-49e3-88c6-9b4fe941dbfd/discovery/keys
+          issuer-uri: https://sts.windows.net/a91a2f57-6dc8-49e3-88c6-9b4fe941dbfd/
+          audience:
+  datasource:
+    url: jdbc:postgresql://c-cosmos-emp-calories.vciw37okmdoa2k.postgres.cosmos.azure.com:5432/emp-calories?currentSchema=sch-emp-calories
+    username: citus
+    password: empC@lories
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+
+swagger:
+    enabled: true
+    title: productService
+    description: Swagger for product Service
+
