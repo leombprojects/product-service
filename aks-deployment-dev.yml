@@ -1,0 +1,42 @@
+apiVersion: apps/V1
+kind: Deployment
+metadata:
+  name: product-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchlabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: product-service
+          image: acrempcalories.azurecr.io/product-service:#{Build.BuildId}#
+          imagePullPolicy: Always
+          securityContext:
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 8097
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: product-service
+    k8s-app: product-service
+  name: product-service
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8090
+  selector:
+    app: product-service

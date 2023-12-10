@@ -1,0 +1,121 @@
+openapi: 3.0.0
+security:
+  - bearerAuth: [ ]
+
+info:
+  description: product Service API
+  title: Product Service
+  version: 1.0.0-SNAPSHOT
+
+tags:
+  - name: "Web API"
+    description: "Web API Endpoints"
+paths:
+  "/health/check":
+    get:
+      summary: Health check endpoint
+      description: Health check endpoint
+      operationId: getHealthCheck
+      responses:
+        "default":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessHealthCheck'
+        "200":
+          description: Service is healthy and running
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessHealthCheck'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessHealthCheck'
+
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessHealthCheck'
+  "/product/list/{course}":
+    get:
+      summary: List products by course
+      description: List products by course
+      operationId: listProductsByCourse
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: path
+          name: course
+          required: true
+          schema:
+            type: string
+          description: Product course code
+      responses:
+        "default":
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "200":
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    SuccessHealthCheck:
+      properties:
+        success:
+          type: boolean
+    Products:
+      type: object
+      properties:
+        productList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    Product:
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        desc:
+          type: string
+        calories:
+          type: integer
+        course:
+          type: string
+        image:
+          type: string
