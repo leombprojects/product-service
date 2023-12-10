@@ -4,6 +4,14 @@
 
 The Product Service is responsible for retrieving food and beverage product data. It provides REST APIs to facilitate seamless integration with other microservices or applications.
 
+## Architecture Diagram
+
+![img.png](architecture.png)
+
+## Database Diagram
+
+![img.png](database.png)
+
 ## Technologies
 
 - Java 17 with Spring Boot
